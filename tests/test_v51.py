@@ -184,9 +184,11 @@ class SafetyTests(Workspace):
     def test_git_tracked_projects_detected(self):
         subprocess.run(['git','init','-q',str(self.root)],check=True,stdout=subprocess.DEVNULL)
         (self.root/'projects').mkdir();(self.root/'projects/report.md').write_text('sensitive')
-        subprocess.run(['git','-C',str(self.root),'add','projects/report.md'],check=True)
+        (self.root/'projects/.gitkeep').write_text('')
+        subprocess.run(['git','-C',str(self.root),'add','projects/report.md','projects/.gitkeep'],check=True)
         result=git_inspect(self.root)
         self.assertIn('projects/report.md',result['sensitive_tracked'])
+        self.assertNotIn('projects/.gitkeep',result['sensitive_tracked'])
         self.assertFalse(result['safe_to_commit'])
     def test_installer_zip_traversal_rejected(self):
         mod=load_module(REPO/'scripts/install_from_zip.py','atlas_installer_test')

@@ -2,6 +2,7 @@
 """Optional local pre-commit guard: git hook must be installed explicitly."""
 from pathlib import Path
 import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from atlas.privacy import git_inspect
 
 if __name__=='__main__':

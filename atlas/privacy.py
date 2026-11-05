@@ -17,7 +17,8 @@ def git_inspect(root):
     tracked=git('ls-files','-z')
     if tracked.returncode: raise AtlasError('Unable to inspect Git tracked files')
     names=[n for n in tracked.stdout.split('\x00') if n]
-    violations=[name for name in names if SENSITIVE.search(name.replace('\\','/'))]
+    # projects/.gitkeep is the release's intentional, content-free placeholder (whitelisted in .gitignore).
+    violations=[name for name in names if SENSITIVE.search(name.replace('\\','/')) and name!='projects/.gitkeep']
     suspicious=[]
     for name in names:
         p=root/name
