@@ -1,0 +1,28 @@
+issue,reported_problem,implementation_status,files_or_commands,verification_and_remaining_gap
+1,ZIP only on GitHub,PARTIAL,scripts/install_from_zip.py; atlas doctor --deployment; README.md,Safe extraction and deployment detection work locally; no access to user GitHub to commit files.
+2,System pip and root-only CLI,IMPLEMENTED_LOCAL,pyproject.toml; atlas CLI; README.md,Installed console script and venv setup documented; other hosts not yet validated.
+3,Missing network readiness check,PARTIAL,atlas/network_doctor.py; atlas doctor --network,Read-only DNS/TLS preflight locally tested with mocks; Copilot firewall and live networks still need testing.
+4,Oversized and stale instructions,IMPLEMENTED_LOCAL,AGENTS.md; archive/; docs/QUICKSTART.md,"Concise core, preserved historical docs, stage-specific skills; effectiveness in Copilot context untested."
+5,Opaque transitions and mandate action,IMPLEMENTED_LOCAL,atlas/project.py; atlas/__main__.py,"Errors show current/next; CLI mandate advances automatically, API remains backwards compatible."
+6,Conflicting artifact path semantics,PARTIAL,atlas/reporting.py; atlas/__main__.py; docs/USAGE.md,Main report commands accept project-relative paths; all legacy artifacts still require project-relative references by design.
+7,Inconsistent timestamps,PARTIAL,atlas/io.py; atlas/capture.py,Source and claim capture auto-stamps UTC; parser accepts dates; legacy test receipts still require observed time and expiry.
+8,Poor string/list validation errors,PARTIAL,atlas/io.py,Text/list accepted for appropriate fields and error types improved; not all schema errors include full artifact paths.
+9,Validate only first failure,PARTIAL,atlas/operability.py; CLI next/advance --dry-run,"Aggregates missing files, answers, tasks and one original gate error; exhaustive nested schema aggregation not completed."
+10,Reapproving access erases tests,IMPLEMENTED_LOCAL,atlas/project.py,Preserves receipts for unchanged plan and decisions; changed plans invalidate correctly.
+11,access-block and budget command bugs,IMPLEMENTED_LOCAL,atlas/__main__.py; atlas/budget.py,Optional block returns success; budget status reads persisted ceiling without --limit.
+12,No scaffold templates,IMPLEMENTED_LOCAL,atlas/operability.py; atlas scaffold,Generates safe draft artifacts and refuses to overwrite existing files; drafts are not evidence.
+13,One-question-at-a-time intake,PARTIAL,atlas/operability.py; atlas intake-batch; AGENTS.md,Returns grouped interview; actual agent behavior not testable locally.
+14,Repeated tool/model approvals,PARTIAL,AGENTS.md; agent skills; atlas/project.py,One grouped approval recommended; no invented model routing. All existing feature rows still require decisions.
+15,Any failure pauses all research,PARTIAL,atlas/project.py; atlas/failures.py; docs/ACCESS.md,Optional blocks preserve tested capabilities and avoid holds; transient retries vary by provider and require authorization.
+16,Short receipt expiry blocks offline work,IMPLEMENTED_LOCAL,atlas/project.py; atlas access-renew,Read-only offline transitions and task completion can proceed; external requests require fresh tests.
+17,No durable source/claim search commands,PARTIAL,atlas/capture.py; source-add/claim-add/search-log-add,Working operator-mediated capture; cannot automatically intercept native Copilot search tools.
+18,Search-only snippets rejected,IMPLEMENTED_LOCAL,atlas/evidence.py; atlas/capture.py,Provisional source_type search_result accepted for storage; barred from independent material-claim certification.
+19,Every follow-up search needs amendment,IMPLEMENTED_LOCAL,atlas/project.py; atlas/contracts.py,EXPLORATORY searches within original query ceiling; mandatory planned searches remain enforced.
+20,Independent-review requirement unavailable,PARTIAL,atlas/reporting.py; docs/ACCESS.md,Limited-report route avoids fabricating independent verification; fully verified gate still requires actual independent review.
+21,Unchecked reports and empty evidence,IMPLEMENTED_LOCAL,atlas/verification.py; atlas/reporting.py,Strict report audit fails for zero claims; limited report carries conspicuous unverified banner.
+22,Fake run-workers public command,IMPLEMENTED_LOCAL,atlas/__main__.py,Renamed test-fixture-workers and documented as synthetic-only; real execution remains provider-specific.
+23,Insufficient report length and outline,IMPLEMENTED_LOCAL,atlas/delivery_contract.py; report-contract/report-audit,User-approved section and minimum-length contract supported; does not infer report quality.
+24,Claim tags and PDF pipeline,IMPLEMENTED_LOCAL,atlas/reporting.py; render --format pdf,"Footnotes and optional ReportLab PDF supported, basic file smoke-tested; not a full desktop publishing engine."
+25,Citation audit false positives,PARTIAL,atlas/verification.py,"More structure/metadata exclusions, still heuristic and requires semantic review."
+26,Confidential data in public Git branch,PARTIAL,atlas/privacy.py; .gitignore; .github/workflows/atlas-privacy.yml,"Tracked-file and common secret checks implemented; cannot undo exposure, detect all secrets or enforce GitHub visibility locally."
+27,Copilot web-fetch failure and relay,PARTIAL,atlas/network_doctor.py; optional_integrations/github_actions_fetch_relay/,"Diagnosis implemented; optional relay encrypted, bounded and disabled. Real GitHub API dispatch, Actions workflow and Copilot connectivity untested."

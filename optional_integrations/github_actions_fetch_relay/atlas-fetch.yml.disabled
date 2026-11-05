@@ -1,0 +1,41 @@
+# MANUAL OPT-IN TEMPLATE. Not active until owner reviews and copies to
+# .github/workflows/atlas-fetch.yml on the repository default branch.
+name: ATLAS Optional Authorized Public Fetch
+on:
+  workflow_dispatch:
+    inputs:
+      urls_json:
+        description: 'JSON list of 1-5 explicitly authorized HTTPS URLs; visible in workflow metadata'
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  fetch:
+    if: ${{ vars.ATLAS_RELAY_OWNER_AUTHORIZED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install audited crypto requirement
+        run: python -m pip install 'cryptography>=46,<47'
+      - name: Run owner-approved bounded fetch
+        env:
+          ATLAS_RELAY_OWNER_AUTHORIZED: ${{ vars.ATLAS_RELAY_OWNER_AUTHORIZED }}
+          ATLAS_RELAY_URLS_JSON: ${{ inputs.urls_json }}
+        run: |
+          python optional_integrations/github_actions_fetch_relay/relay.py run \
+            --allowlist optional_integrations/github_actions_fetch_relay/allowlist.json \
+            --public-key optional_integrations/github_actions_fetch_relay/recipient_public.key \
+            --output encrypted-results.json
+      - name: Upload encrypted artifact (one day)
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-relay-encrypted-${{ github.run_id }}
+          path: encrypted-results.json
+          retention-days: 1

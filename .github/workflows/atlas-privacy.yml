@@ -1,0 +1,16 @@
+name: ATLAS tracked-file privacy check
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  privacy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check tracked files for common sensitive patterns
+        run: python -m atlas --root . check && python scripts/precommit_privacy.py
